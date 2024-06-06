@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pode namorar?</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#resultados {
+    margin-top: 20px;
+    text-align: left;
+}
+
+    </style>
+<script>
+    function calcularIdadeMinima(idade) {
+    if (idade < 13) return "Idade mínima para namorar é 13 anos";
+    if (idade > 100) return "Pessoas acima de 100 anos não podem namorar";
+    return Math.floor(idade / 2) + 7;
+}
+
+function calcularIdadeMaxima(idade) {
+    if (idade < 13) return "Idade mínima para namorar é 13 anos";
+    if (idade > 100) return "Pessoas acima de 100 anos não podem namorar";
+    return (idade - 7) * 2;
+}
+
+function verificarCasal(idade1, idade2) {
+    const idadeMin1 = calcularIdadeMinima(idade1);
+    const idadeMax1 = calcularIdadeMaxima(idade1);
+    const idadeMin2 = calcularIdadeMinima(idade2);
+    const idadeMax2 = calcularIdadeMaxima(idade2);
+
+    if (typeof idadeMin1 === "string" || typeof idadeMin2 === "string") {
+        return "Um ou ambos estão fora da faixa etária permitida";
+    }
+
+    if (idade1 >= idadeMin2 && idade1 <= idadeMax2 && idade2 >= idadeMin1 && idade2 <= idadeMax1) {
+        return "O casal pode namorar";
+    } else {
+        return "O casal não pode namorar";
+    }
+}
+
+function verificarTrisal(idade1, idade2, idade3) {
+    const resultado1 = verificarCasal(idade1, idade2);
+    const resultado2 = verificarCasal(idade2, idade3);
+    const resultado3 = verificarCasal(idade1, idade3);
+
+    if (resultado1 === "O casal pode namorar" && resultado2 === "O casal pode namorar" && resultado3 === "O casal pode namorar") {
+        return "O trisal pode namorar";
+    } else {
+        return "O trisal não pode namorar";
+    }
+}
+
+function calcular() {
+    const idade1 = parseInt(document.getElementById("idade1").value);
+    const idade2 = parseInt(document.getElementById("idade2").value);
+    const idade3 = parseInt(document.getElementById("idade3").value);
+
+    let resultados = "";
+
+    if (!isNaN(idade1)) {
+        resultados += `Idade mínima que a pessoa de ${idade1} anos pode namorar é: ${calcularIdadeMinima(idade1)}<br>`;
+        resultados += `Idade máxima que a pessoa de ${idade1} anos pode namorar é: ${calcularIdadeMaxima(idade1)}<br>`;
+    }
+    if (!isNaN(idade1) && !isNaN(idade2)) {
+        resultados += `Verificação do casal (${idade1}, ${idade2}): ${verificarCasal(idade1, idade2)}<br>`;
+    }
+    if (!isNaN(idade1) && !isNaN(idade2) && !isNaN(idade3)) {
+        resultados += `Verificação do trisal (${idade1}, ${idade2}, ${idade3}): ${verificarTrisal(idade1, idade2, idade3)}<br>`;
+    }
+
+    document.getElementById("resultados").innerHTML = resultados;
+}
+
+</script>
+</head>
+<body>
+    <div class="container">
+        <h1>Pode Namorar?</h1>
+        <div class="form-group">
+            <label for="idade1">Idade da Pessoa 1:</label>
+            <input type="number" id="idade1" min="0" max="100">
+        </div>
+        <div class="form-group">
+            <label for="idade2">Idade da Pessoa 2:</label>
+            <input type="number" id="idade2" min="0" max="100">
+        </div>
+        <div class="form-group">
+            <label for="idade3">Idade da Pessoa 3 (Opcional):</label>
+            <input type="number" id="idade3" min="0" max="100">
+        </div>
+        <button onclick="calcular()">Calcular</button>
+        <div id="resultados"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
